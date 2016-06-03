@@ -76,5 +76,19 @@ test('basics', function(t){
     e('return', e('+', e.id('a'), e.id('b')))
   ], 'add'), 'function add(a, b) {return a + b;}');
 
+  tt(e('?', e('>', e.id('a'), e.num(0))),
+    'a > 0 ? undefined : undefined'
+  );
+
+  tt(e('?', e('>', e.id('a'), e.num(0)),
+        e.id('a')),
+    'a > 0 ? a : undefined'
+  );
+  tt(e('?', e('>', e.id('a'), e.num(0)),
+        e.id('a'),
+        e.num(1)),
+    'a > 0 ? a : 1'
+  );
+
   t.end();
 });

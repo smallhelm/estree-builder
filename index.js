@@ -262,6 +262,15 @@ def('if', function(test, consequent, alternate){
   };
 });
 
+def(['ternary', '?'], function(test, consequent, alternate){
+  return {
+    type: 'ConditionalExpression',
+    test: test,
+    consequent: consequent || e.nil(),
+    alternate: alternate || e.nil()
+  };
+});
+
 def('throw', function(arg){
   return {
     type: 'ThrowStatement',
