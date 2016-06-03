@@ -323,3 +323,11 @@ def(['function', 'fn', 'lambda'], function(args, body, id){
     body: e.block(body)
   };
 });
+
+def('call', function(callee, args){
+  return {
+    type: 'CallExpression',
+    callee: callee,
+    'arguments': args
+  };
+});

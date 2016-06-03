@@ -90,5 +90,13 @@ test('basics', function(t){
     'a > 0 ? a : 1'
   );
 
+  tt(e('call', e.id('a'), []),
+    'a()'
+  );
+
+  tt(e('call', e.id('a'), [e.num(1), e.num(2)]),
+    'a(1, 2)'
+  );
+
   t.end();
 });
