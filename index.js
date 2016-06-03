@@ -21,13 +21,26 @@ var isLocationNode = function(loc){
   return loc && has(loc, 'start') && has(loc, 'end');
 };
 
+var defJSOperator = function(type, operator){
+  def(operator, function(left, right){
+    return {
+      type: type,
+      operator: operator,
+      left: left,
+      right: right
+    };
+  });
+};
+
 var print_docs = false;
 
 var docsSection = function(section_name){
   if(!print_docs) return;
+  console.log('```');
   console.log();
   console.log('### ' + section_name);
   console.log();
+  console.log('```js');
 };
 
 var docsFn = function(names, builder){
@@ -41,7 +54,15 @@ var docsFn = function(names, builder){
 
   var doc_args = ["'"+names[0]+"'"].concat(arg_names);
 
-  console.log('e(' + doc_args.join(', ') + ')' + (names.length > 1 ? ' //aliases: ' + names.slice(1).join(', ') : ''));
+  var aliases = '';
+  if(names.length > 1){
+    aliases = ' //aliases: ';
+    aliases += names.slice(1).map(function(a){
+      return "'"+a+"'";
+    }).join(', ');
+  }
+
+  console.log('e(' + doc_args.join(', ') + ')' +  aliases);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -114,6 +135,10 @@ def('null', function(){
   };
 });
 
+def(['undefined', 'nil'], function(){
+  return e.id('undefined');
+});
+
 def(['array', 'arr'], function(elements){
   return {
     type: 'ArrayExpression',
@@ -139,6 +164,8 @@ def(['object', 'obj'], function(obj){
   };
 });
 
+docsSection('given some json object, build the tree');
+
 docsFn(['json'], function(val){});
 e.json = function(val, loc){
   if(Array.isArray(val)){
@@ -163,86 +190,20 @@ e.json = function(val, loc){
   return e['null'](loc);
 };
 
-var defJSOperator = function(type, operator){
-  def(operator, function(left, right){
-    return {
-      type: type,
-      operator: operator,
-      left: left,
-      right: right
-    };
-  });
-};
+docsSection('variables');
 
-[
-  "==", "!=", "===", "!==",
-  "<", "<=", ">", ">=",
-  "<<", ">>", ">>>",
-  "*", "/", "%",
-  "|", "^", "&", "in",
-  "instanceof"
-].forEach(function(operator){
-  defJSOperator("BinaryExpression", operator);
-});
-
-["&&", "||"].forEach(function(operator){
-  defJSOperator("LogicalExpression", operator);
-});
-
-["!", "~", "typeof", "void", "delete"].forEach(function(operator){
-  def(operator, function(arg){
-    return {
-      type: "UnaryExpression",
-      prefix: true,
-      operator: operator,
-      argument: arg
-    };
-  });
-});
-
-["+", "-"].forEach(function(operator){
-  def(operator, function(a, b){
-    if(arguments.length === 1){
-      return {
-        type: "UnaryExpression",
-        prefix: true,
-        operator: operator,
-        argument: a
-      };
-    }
-    return {
-      type: "BinaryExpression",
-      operator: operator,
-      left: a,
-      right: b
-    };
-  });
-});
-
-[
-  "=", "+=", "-=", "*=", "/=", "%=",
- "<<=", ">>=", ">>>=",
- "|=", "^=", "&="
-].forEach(function(op){
-  def(op, function(left, right){
-    return {
-      type: 'AssignmentExpression',
-      operator: op,
-      left: left,
-      right: right
-    };
-  });
-});
-
-["++", "--"].forEach(function(op){
-  def(op, function(arg){
-    return {
-      type: 'UpdateExpression',
-      operator: op,
-      argument: arg,
-      prefix: false
-    };
-  });
+def('var', function(name, val){
+  return {
+    type: 'VariableDeclaration',
+    kind: 'var',
+    declarations: [
+      {
+        type: 'VariableDeclarator',
+        id: e.id(name),
+        init: val
+      }
+    ]
+  };
 });
 
 def(['identifier', 'id'], function(name){
@@ -252,40 +213,7 @@ def(['identifier', 'id'], function(name){
   };
 });
 
-def(['undefined', 'nil'], function(){
-  return e.id('undefined');
-});
-
-def(['arguments', 'args'], function(){
-  return e.id('arguments');
-});
-
-def('this', function(){
-  return {
-    type: 'ThisExpression'
-  };
-});
-
-def(['statement', ';'], function(expr){
-  return {
-    type: 'ExpressionStatement',
-    expression: expr
-  };
-});
-
-def('block', function(body){
-  return {
-    type: 'BlockStatement',
-    body: body
-  };
-});
-
-def('return', function(arg){
-  return {
-    type: 'ReturnStatement',
-    argument: arg
-  };
-});
+docsSection('control flow');
 
 def('if', function(test, consequent, alternate){
   return {
@@ -302,6 +230,13 @@ def(['ternary', '?'], function(test, consequent, alternate){
     test: test,
     consequent: consequent || e.nil(),
     alternate: alternate || e.nil()
+  };
+});
+
+def('return', function(arg){
+  return {
+    type: 'ReturnStatement',
+    argument: arg
   };
 });
 
@@ -325,27 +260,7 @@ def('try', function(body, catch_var, catch_stmt, finally_stmt){
   };
 });
 
-def('new', function(callee, args){
-  return {
-    type: 'NewExpression',
-    callee: callee,
-    'arguments': args
-  };
-});
-
-def('var', function(name, val){
-  return {
-    type: 'VariableDeclaration',
-    kind: 'var',
-    declarations: [
-      {
-        type: 'VariableDeclarator',
-        id: e.id(name),
-        init: val
-      }
-    ]
-  };
-});
+docsSection('functions');
 
 def(['function', 'fn', 'lambda'], function(args, body, id){
   return {
@@ -365,6 +280,8 @@ def('call', function(callee, args){
     'arguments': args
   };
 });
+
+docsSection('property access');
 
 def('.', function(obj, prop){
   return {
@@ -391,3 +308,115 @@ def(['get-in', '..'], function(obj, path){
   });
   return cur;
 });
+
+docsSection('language stuff');
+
+def(['arguments', 'args'], function(){
+  return e.id('arguments');
+});
+
+def('this', function(){
+  return {
+    type: 'ThisExpression'
+  };
+});
+
+def(['statement', ';'], function(expr){
+  return {
+    type: 'ExpressionStatement',
+    expression: expr
+  };
+});
+
+def('block', function(body){
+  return {
+    type: 'BlockStatement',
+    body: body
+  };
+});
+
+def('new', function(callee, args){
+  return {
+    type: 'NewExpression',
+    callee: callee,
+    'arguments': args
+  };
+});
+
+docsSection('infix operators');
+
+[
+  "==", "!=", "===", "!==",
+  "<", "<=", ">", ">=",
+  "<<", ">>", ">>>",
+  "*", "/", "%",
+  "|", "^", "&", "in",
+  "instanceof"
+].forEach(function(operator){
+  defJSOperator("BinaryExpression", operator);
+});
+
+["&&", "||"].forEach(function(operator){
+  defJSOperator("LogicalExpression", operator);
+});
+
+["+", "-"].forEach(function(operator){
+  def(operator, function(a, b){
+    if(arguments.length === 1){
+      return {
+        type: "UnaryExpression",
+        prefix: true,
+        operator: operator,
+        argument: a
+      };
+    }
+    return {
+      type: "BinaryExpression",
+      operator: operator,
+      left: a,
+      right: b
+    };
+  });
+});
+
+docsSection('assignments');
+
+[
+  "=", "+=", "-=", "*=", "/=", "%=",
+ "<<=", ">>=", ">>>=",
+ "|=", "^=", "&="
+].forEach(function(op){
+  def(op, function(left, right){
+    return {
+      type: 'AssignmentExpression',
+      operator: op,
+      left: left,
+      right: right
+    };
+  });
+});
+
+docsSection('unary operators');
+
+["!", "~", "typeof", "void", "delete"].forEach(function(operator){
+  def(operator, function(arg){
+    return {
+      type: "UnaryExpression",
+      prefix: true,
+      operator: operator,
+      argument: arg
+    };
+  });
+});
+
+["++", "--"].forEach(function(op){
+  def(op, function(arg){
+    return {
+      type: 'UpdateExpression',
+      operator: op,
+      argument: arg,
+      prefix: false
+    };
+  });
+});
+
