@@ -125,3 +125,40 @@ e.json = function(val, loc){
   }
   return e['null'](loc);
 };
+
+var defJSOperator = function(type, operator){
+  def(operator, function(left, right){
+    return {
+      type: type,
+      operator: operator,
+      left: left,
+      right: right
+    };
+  });
+};
+
+[
+  "==", "!=", "===", "!==",
+  "<", "<=", ">", ">=",
+  "<<", ">>", ">>>",
+  "*", "/", "%",
+  "|", "^", "&", "in",
+  "instanceof"
+].forEach(function(operator){
+  defJSOperator("BinaryExpression", operator);
+});
+
+["&&", "||"].forEach(function(operator){
+  defJSOperator("LogicalExpression", operator);
+});
+
+["!", "~", "typeof", "void", "delete"].forEach(function(operator){
+  def(operator, function(arg){
+    return {
+      type: "UnaryExpression",
+      prefix: true,
+      operator: operator,
+      argument: arg
+    };
+  });
+});

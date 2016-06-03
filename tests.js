@@ -14,5 +14,9 @@ test('basics', function(t){
     one: [2, '3', true, false, null]
   })), '{\n\t"one": [2, "3", true, false, null]\n}');
 
+  t.equals(astring(e['==='](e.num(1), e.num(0))), '1 === 0');
+  t.equals(astring(e['&&'](e.num(1), e.num(0))), '1 && 0');
+  t.equals(astring(e['!'](e.num(0))), '!0');
+
   t.end();
 });
