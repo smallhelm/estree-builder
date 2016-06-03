@@ -7,6 +7,16 @@ var isObject = function(val){
   return !!val && (typeof val == 'object');
 };
 
+var mapValues = function(obj, fn){
+  var n_obj = {};
+  for(key in obj){
+    if(has(obj, key)){
+      n_obj[key] = fn(obj[key], key, obj);
+    }
+  }
+  return n_obj;
+};
+
 var isLocationNode = function(loc){
   return loc && has(loc, 'start') && has(loc, 'end');
 };
@@ -75,17 +85,21 @@ def(['array', 'arr'], function(elements){
   };
 });
 
-def(['object', 'obj'], function(pairs){
+def(['object', 'obj'], function(obj){
+  var pairs = [];
+  for(key in obj){
+    if(has(obj, key)){
+      pairs.push({
+        type: 'Property',
+        key: e.string(key),
+        value: obj[key],
+        kind: 'init'
+      });
+    }
+  }
   return {
     type: 'ObjectExpression',
-    properties: pairs.map(function(pair){
-      return {
-        type: 'Property',
-        key: pair[0],
-        value: pair[1],
-        kind: 'init'
-      };
-    })
+    properties: pairs
   };
 });
 
@@ -96,7 +110,9 @@ e.json = function(val, loc){
     }));
   }
   if(isObject(val)){
-    return e.object(val, loc);
+    return e.object(mapValues(val, function(elm){
+      return e.json(elm, loc);
+    }), loc);
   }
   if(val === true || val === false){
     return e[val ? 'true' : 'false'](loc);
@@ -107,5 +123,5 @@ e.json = function(val, loc){
   if(typeof val === 'number'){
     return e.number(val, loc);
   }
-  return e['null']();
+  return e['null'](loc);
 };
