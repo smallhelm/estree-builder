@@ -7,6 +7,26 @@ Handy functions for building estree nodes
 
 ## Example
 
+```js
+var e = require('estree-builder');
+
+var estree = e.number(1);
+// -> { type: 'Literal', value: 1 }
+
+//let's use astring to convert the estree into js code
+var astring = require('astring');
+
+astring(estree);
+// -> '1'
+
+estree = e.fn(['a', 'b'], [
+  e('return', e('+', e.id('a'), e.id('b')))
+], 'add');
+
+astring(estree);
+// -> 'function add(a, b) {return a + b;}'
+```
+
 ## Usage
 There are 3 ways to call a builder
 ```js
