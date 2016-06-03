@@ -162,3 +162,39 @@ var defJSOperator = function(type, operator){
     };
   });
 });
+
+[
+  "=", "+=", "-=", "*=", "/=", "%=",
+ "<<=", ">>=", ">>>=",
+ "|=", "^=", "&="
+].forEach(function(op){
+  def(op, function(left, right){
+    return {
+      type: 'AssignmentExpression',
+      operator: op,
+      left: left,
+      right: right
+    };
+  });
+});
+
+def(['identifier', 'id'], function(name){
+  return {
+    type: 'Identifier',
+    name: name
+  };
+});
+
+def(['undefined', 'nil'], function(){
+  return e.id('undefined');
+});
+
+def(['arguments', 'args'], function(){
+  return e.id('arguments');
+});
+
+def('this', function(){
+  return {
+    type: 'ThisExpression'
+  };
+});

@@ -18,5 +18,10 @@ test('basics', function(t){
   t.equals(astring(e['&&'](e.num(1), e.num(0))), '1 && 0');
   t.equals(astring(e['!'](e.num(0))), '!0');
 
+  t.equals(astring(e.nil()), 'undefined');
+  t.equals(astring(e['this']()), 'this');
+  t.equals(astring(e['='](e.id('a'), e.num(0))), 'a = 0');
+  t.equals(astring(e['+='](e.id('i'), e.num(2))), 'i += 2');
+
   t.end();
 });
