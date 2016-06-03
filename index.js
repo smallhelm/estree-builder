@@ -331,3 +331,29 @@ def('call', function(callee, args){
     'arguments': args
   };
 });
+
+def('.', function(obj, prop){
+  return {
+    type: 'MemberExpression',
+    object: obj,
+    property: prop,
+    computed: prop.type !== 'Identifier'
+  };
+});
+
+def('get', function(obj, prop){
+  return {
+    type: 'MemberExpression',
+    object: obj,
+    property: prop,
+    computed: true
+  };
+});
+
+def(['get-in', '..'], function(obj, path){
+  var cur = obj;
+  path.forEach(function(part){
+    cur = e.get(cur, part);
+  });
+  return cur;
+});

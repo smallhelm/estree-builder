@@ -98,5 +98,14 @@ test('basics', function(t){
     'a(1, 2)'
   );
 
+  tt(e('.', e.id('a'), e.id('b')), 'a.b');
+  tt(e('.', e.id('a'), e.str('b')), 'a["b"]');
+  tt(e('.', e.id('a'), e.num(1)), 'a[1]');
+
+  tt(e('get', e.id('a'), e.id('b')), 'a[b]');
+  tt(e('get', e.id('a'), e.str('b')), 'a["b"]');
+
+  tt(e('..', e.id('a'), [e.num(1), e.id('b'), e.str('c')]), 'a[1][b]["c"]');
+
   t.end();
 });
