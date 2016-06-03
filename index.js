@@ -233,6 +233,33 @@ def(['ternary', '?'], function(test, consequent, alternate){
   };
 });
 
+def('while', function(test, body){
+  return {
+    type: 'WhileStatement',
+    test: test,
+    body: body
+  };
+});
+
+def('for', function(init, test, update, body){
+  return {
+    type: 'ForStatement',
+    init: init,
+    test: test,
+    update: update,
+    body: body
+  };
+});
+
+def('for-in', function(left, right, body){
+  return {
+    type: 'ForInStatement',
+    left: left,
+    right: right,
+    body: body
+  };
+});
+
 def('return', function(arg){
   return {
     type: 'ReturnStatement',

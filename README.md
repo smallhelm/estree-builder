@@ -3,7 +3,7 @@
 [![build status](https://secure.travis-ci.org/smallhelm/estree-builder.svg)](https://travis-ci.org/smallhelm/estree-builder)
 [![dependency status](https://david-dm.org/smallhelm/estree-builder.svg)](https://david-dm.org/smallhelm/estree-builder)
 
-Handy functions for building estree nodes
+Handy functions for building [estree](https://github.com/estree/estree/blob/master/spec.md) nodes
 
 ## Example
 
@@ -78,6 +78,9 @@ e('identifier', name) //aliases: 'id'
 ```js
 e('if', test, consequent, alternate)
 e('ternary', test, consequent, alternate) //aliases: '?'
+e('while', test, body)
+e('for', init, test, update, body)
+e('for-in', left, right, body)
 e('return', arg)
 e('throw', arg)
 e('try', body, catch_var, catch_stmt, finally_stmt)
