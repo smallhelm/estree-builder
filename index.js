@@ -23,7 +23,10 @@ var isLocationNode = function(loc){
 
 ////////////////////////////////////////////////////////////////////////////////
 
-var e = module.exports = {};
+var e = module.exports = function(){
+  var args = Array.prototype.slice.call(arguments);
+  return e[args[0]].apply(null, args.slice(1));
+};
 
 var def = function(names, builder){
   if(typeof names === 'string'){

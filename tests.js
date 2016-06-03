@@ -58,22 +58,22 @@ test('basics', function(t){
 
   tt(e['try'](), 'try {} catch (error) {} finally {}');
   tt(e['try']([
-    e[';'](e['++'](e.id('i')))
+    e(';', e['++'](e.id('i')))
   ], 'e', [
-    e[';'](e['='](e.id('error'), e.id('e')))
+    e(';', e['='](e.id('error'), e.id('e')))
   ], [
-    e[';'](e['++'](e.id('j')))
+    e(';', e['++'](e.id('j')))
   ]), 'try {i++;} catch (e) {error = e;} finally {j++;}');
 
-  tt(e['var']('i'), 'var i;');
-  tt(e['var']('i', e.num(1.5)), 'var i = 1.5;');
+  tt(e('var', 'i'), 'var i;');
+  tt(e('var', 'i', e.num(1.5)), 'var i = 1.5;');
 
   tt(e.fn(['a', 'b'], [
-    e['return'](e['+'](e.id('a'), e.id('b')))
+    e('return', e('+', e.id('a'), e.id('b')))
   ]), 'function (a, b) {return a + b;}');
 
   tt(e.fn(['a', 'b'], [
-    e['return'](e['+'](e.id('a'), e.id('b')))
+    e('return', e('+', e.id('a'), e.id('b')))
   ], 'add'), 'function add(a, b) {return a + b;}');
 
   t.end();
