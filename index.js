@@ -286,3 +286,17 @@ def('new', function(callee, args){
     'arguments': args
   };
 });
+
+def('var', function(name, val){
+  return {
+    type: 'VariableDeclaration',
+    kind: 'var',
+    declarations: [
+      {
+        type: 'VariableDeclarator',
+        id: name,
+        init: val
+      }
+    ]
+  };
+});

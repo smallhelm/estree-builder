@@ -4,7 +4,10 @@ var astring = require('astring');
 
 test('basics', function(t){
   var tt = function(est, expected){
-    t.equals(astring(est), expected);
+    t.equals(astring(est, {
+      indent: '',
+      lineEnd: ''
+    }), expected);
   };
 
   t.equals(astring(e.string('blah')), '"blah"');
@@ -60,7 +63,10 @@ test('basics', function(t){
     e[';'](e['='](e.id('error'), e.id('e')))
   ], [
     e[';'](e['++'](e.id('j')))
-  ]), 'try {\n\ti++;\n} catch (e) {\n\terror = e;\n} finally {\n\tj++;\n}');
+  ]), 'try {i++;} catch (e) {error = e;} finally {j++;}');
+
+  tt(e['var'](e.id('i')), 'var i;');
+  tt(e['var'](e.id('i'), e.num(1.5)), 'var i = 1.5;');
 
   t.end();
 });
