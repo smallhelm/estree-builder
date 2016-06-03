@@ -197,6 +197,17 @@ var defJSOperator = function(type, operator){
   });
 });
 
+["++", "--"].forEach(function(op){
+  def(op, function(arg){
+    return {
+      type: 'UpdateExpression',
+      operator: op,
+      argument: arg,
+      prefix: false
+    };
+  });
+});
+
 def(['identifier', 'id'], function(name){
   return {
     type: 'Identifier',
@@ -215,5 +226,63 @@ def(['arguments', 'args'], function(){
 def('this', function(){
   return {
     type: 'ThisExpression'
+  };
+});
+
+def(['statement', ';'], function(expr){
+  return {
+    type: 'ExpressionStatement',
+    expression: expr
+  };
+});
+
+def('block', function(body){
+  return {
+    type: 'BlockStatement',
+    body: body
+  };
+});
+
+def('return', function(arg){
+  return {
+    type: 'ReturnStatement',
+    argument: arg
+  };
+});
+
+def('if', function(test, consequent, alternate){
+  return {
+    type: 'IfStatement',
+    test: test,
+    consequent: consequent,
+    alternate: alternate
+  };
+});
+
+def('throw', function(arg){
+  return {
+    type: 'ThrowStatement',
+    argument: arg
+  };
+});
+
+def('try', function(body, catch_var, catch_stmt, finally_stmt){
+  return {
+    type: 'TryStatement',
+    block: e.block(body),
+    handler: {
+      type: 'CatchClause',
+      param: e.id(catch_var || 'error'),
+      body: e.block(catch_stmt)
+    },
+    finalizer: e.block(finally_stmt)
+  };
+});
+
+def('new', function(callee, args){
+  return {
+    type: 'NewExpression',
+    callee: callee,
+    'arguments': args
   };
 });
