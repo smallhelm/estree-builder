@@ -10,35 +10,35 @@ test('basics', function(t){
     }), expected);
   };
 
-  t.equals(astring(e.string('blah')), '"blah"');
-  t.equals(astring(e.object({
+  tt(e.string('blah'), '"blah"');
+  tt(e.object({
     one: e.number(2),
     three: e['true']()
-  })), '{\n\t"one": 2,\n\t"three": true\n}');
-  t.equals(astring(e.json([2, '3', true, false, null])), '[2, "3", true, false, null]');
+  }), '{"one": 2,"three": true}');
+  tt(e.json([2, '3', true, false, null]), '[2, "3", true, false, null]');
 
-  t.equals(astring(e.json({
+  tt(e.json({
     one: [2, '3', true, false, null]
-  })), '{\n\t"one": [2, "3", true, false, null]\n}');
+  }), '{"one": [2, "3", true, false, null]}');
 
-  t.equals(astring(e['==='](e.num(1), e.num(0))), '1 === 0');
-  t.equals(astring(e['&&'](e.num(1), e.num(0))), '1 && 0');
-  t.equals(astring(e['!'](e.num(0))), '!0');
+  tt(e['==='](e.num(1), e.num(0)), '1 === 0');
+  tt(e['&&'](e.num(1), e.num(0)), '1 && 0');
+  tt(e['!'](e.num(0)), '!0');
 
-  t.equals(astring(e.nil()), 'undefined');
-  t.equals(astring(e['this']()), 'this');
-  t.equals(astring(e['='](e.id('a'), e.num(0))), 'a = 0');
-  t.equals(astring(e['+='](e.id('i'), e.num(2))), 'i += 2');
+  tt(e.nil(), 'undefined');
+  tt(e['this'](), 'this');
+  tt(e['='](e.id('a'), e.num(0)), 'a = 0');
+  tt(e['+='](e.id('i'), e.num(2)), 'i += 2');
 
-  t.equals(astring(e['-'](e.num(1), e.num(2))), '1 - 2');
-  t.equals(astring(e['-'](e.num(1))), '-1');
-  t.equals(astring(e['+'](e.num(1e-5))), '+0.00001');
-  t.equals(astring(e['+'](e.num(1e-5), e.id('i'))), '0.00001 + i');
+  tt(e['-'](e.num(1), e.num(2)), '1 - 2');
+  tt(e['-'](e.num(1)), '-1');
+  tt(e['+'](e.num(1e-5)), '+0.00001');
+  tt(e['+'](e.num(1e-5), e.id('i')), '0.00001 + i');
 
-  t.equals(astring(e['++'](e.id('i'))), 'i++');
-  t.equals(astring(e['--'](e.id('i'))), 'i--');
+  tt(e['++'](e.id('i')), 'i++');
+  tt(e['--'](e.id('i')), 'i--');
 
-  t.equals(astring(e[';'](e['--'](e.id('i')))), 'i--;');
+  tt(e[';'](e['--'](e.id('i'))), 'i--;');
 
   tt(e['return'](e.id('i')), 'return i;');
 
