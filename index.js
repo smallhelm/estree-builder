@@ -21,6 +21,29 @@ var isLocationNode = function(loc){
   return loc && has(loc, 'start') && has(loc, 'end');
 };
 
+var print_docs = false;
+
+var docsSection = function(section_name){
+  if(!print_docs) return;
+  console.log();
+  console.log('### ' + section_name);
+  console.log();
+};
+
+var docsFn = function(names, builder){
+  if(!print_docs) return;
+  var parsed_args = /^function \(([^\)]*)\)/.exec(builder.toString());
+  var arg_names = parsed_args[1].split(',').map(function(arg){
+    return arg.trim();
+  }).filter(function(arg){
+    return arg.length > 0;
+  });
+
+  var doc_args = ["'"+names[0]+"'"].concat(arg_names);
+
+  console.log('e(' + doc_args.join(', ') + ')' + (names.length > 1 ? ' //aliases: ' + names.slice(1).join(', ') : ''));
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 
 var e = module.exports = function(){
@@ -32,6 +55,7 @@ var def = function(names, builder){
   if(typeof names === 'string'){
     names = [names];
   }
+  docsFn(names, builder);
   var fn = function(){
     var args = Array.prototype.slice.call(arguments);
     var loc;
@@ -53,17 +77,19 @@ var def = function(names, builder){
   });
 };
 
-def(['string', 'str', 'number', 'num', 'float'], function(val){
+docsSection('building block values');
+
+def(['number', 'num', 'float'], function(val){
   return {
     'type': 'Literal',
     'value': val
   };
 });
 
-def('null', function(){
+def(['string', 'str'], function(val){
   return {
     'type': 'Literal',
-    'value': null
+    'value': val
   };
 });
 
@@ -78,6 +104,13 @@ def('false', function(){
   return {
     'type': 'Literal',
     'value': false
+  };
+});
+
+def('null', function(){
+  return {
+    'type': 'Literal',
+    'value': null
   };
 });
 
@@ -106,6 +139,7 @@ def(['object', 'obj'], function(obj){
   };
 });
 
+docsFn(['json'], function(val){});
 e.json = function(val, loc){
   if(Array.isArray(val)){
     return e.array(val.map(function(elm){
