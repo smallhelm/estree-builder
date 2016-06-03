@@ -7,6 +7,7 @@
     "index.js"
   ],
   "scripts": {
+    "start": "onchange -i *.js -- npm test -s",
     "test": "node tests.js"
   },
   "repository": {
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/smallhelm/estree-builder#readme",
   "devDependencies": {
     "astring": "^0.6.1",
+    "onchange": "^2.4.0",
     "tape": "^4.5.1"
   }
 }

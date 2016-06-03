@@ -163,6 +163,25 @@ var defJSOperator = function(type, operator){
   });
 });
 
+["+", "-"].forEach(function(operator){
+  def(operator, function(a, b){
+    if(arguments.length === 1){
+      return {
+        type: "UnaryExpression",
+        prefix: true,
+        operator: operator,
+        argument: a
+      };
+    }
+    return {
+      type: "BinaryExpression",
+      operator: operator,
+      left: a,
+      right: b
+    };
+  });
+});
+
 [
   "=", "+=", "-=", "*=", "/=", "%=",
  "<<=", ">>=", ">>>=",

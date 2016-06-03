@@ -23,5 +23,10 @@ test('basics', function(t){
   t.equals(astring(e['='](e.id('a'), e.num(0))), 'a = 0');
   t.equals(astring(e['+='](e.id('i'), e.num(2))), 'i += 2');
 
+  t.equals(astring(e['-'](e.num(1), e.num(2))), '1 - 2');
+  t.equals(astring(e['-'](e.num(1))), '-1');
+  t.equals(astring(e['+'](e.num(1e-5))), '+0.00001');
+  t.equals(astring(e['+'](e.num(1e-5), e.id('i'))), '0.00001 + i');
+
   t.end();
 });
