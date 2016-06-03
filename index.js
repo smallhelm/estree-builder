@@ -294,9 +294,20 @@ def('var', function(name, val){
     declarations: [
       {
         type: 'VariableDeclarator',
-        id: name,
+        id: e.id(name),
         init: val
       }
     ]
+  };
+});
+
+def(['function', 'fn', 'lambda'], function(args, body, id){
+  return {
+    type: 'FunctionExpression',
+    id: typeof id === 'string' ? e.id(id) : undefined,
+    params: args.map(function(arg){
+      return e.id(arg);
+    }),
+    body: e.block(body)
   };
 });
