@@ -1,0 +1,26 @@
+{
+  "name": "estree-builder",
+  "version": "0.0.0",
+  "description": "Handy functions for building estree nodes",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smallhelm/estree-builder.git"
+  },
+  "keywords": [
+    "estree"
+  ],
+  "author": "farskipper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smallhelm/estree-builder/issues"
+  },
+  "homepage": "https://github.com/smallhelm/estree-builder#readme",
+  "devDependencies": {
+    "astring": "^0.6.1",
+    "tape": "^4.5.1"
+  }
+}
