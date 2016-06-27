@@ -192,14 +192,14 @@ e.json = function(val, loc){
 
 docsSection('variables');
 
-def('var', function(name, val){
+def('var', function(id, val){
   return {
     type: 'VariableDeclaration',
     kind: 'var',
     declarations: [
       {
         type: 'VariableDeclarator',
-        id: e.id(name),
+        id: typeof id === 'string' ? e.id(id) : id,
         init: val
       }
     ]
