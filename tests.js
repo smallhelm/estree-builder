@@ -67,6 +67,7 @@ test('basics', function(t){
 
   tt(e('var', 'i'), 'var i;');
   tt(e('var', 'i', e.num(1.5)), 'var i = 1.5;');
+  tt(e('var', e.id('blah')), 'var blah;');
 
   tt(e.fn(['a', 'b'], [
     e('return', e('+', e.id('a'), e.id('b')))
