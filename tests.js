@@ -113,3 +113,23 @@ test('basics', function(t){
 
   t.end();
 });
+
+test('loc', function(t){
+  t.deepEquals(e('id', 'blah', {
+    start: {line: 1, column: 1},
+    end: {line: 1, column: 20}
+  }).loc, {
+    start: {line: 1, column: 1},
+    end: {line: 1, column: 20}
+  });
+
+  t.deepEquals(e('while', e.id('a'), e(';', e('++', e.id('i'))), {
+    start: {line: 1, column: 1},
+    end: {line: 3, column: 2}
+  }).loc, {
+    start: {line: 1, column: 1},
+    end: {line: 3, column: 2}
+  });
+
+  t.end();
+});

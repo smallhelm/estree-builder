@@ -80,8 +80,8 @@ var def = function(names, builder){
   var fn = function(){
     var args = Array.prototype.slice.call(arguments);
     var loc;
-    if(isLocationNode(args.unshift())){
-      loc = args.unshift();
+    if(isLocationNode(args[args.length - 1])){
+      loc = args[args.length - 1];
       args = args.slice(0, -1);
     }
     var node = builder.apply(null, args);
