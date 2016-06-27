@@ -146,16 +146,27 @@ def(['array', 'arr'], function(elements){
   };
 });
 
+def(['object-raw', 'obj-raw'], function(pairs){
+  return {
+    type: 'ObjectExpression',
+    properties: pairs
+  };
+});
+
+def(['object-property', 'obj-prop'], function(key, value){
+  return {
+    type: 'Property',
+    key: key,
+    value: value,
+    kind: 'init'
+  };
+});
+
 def(['object', 'obj'], function(obj){
   var pairs = [];
   for(key in obj){
     if(has(obj, key)){
-      pairs.push({
-        type: 'Property',
-        key: e.string(key),
-        value: obj[key],
-        kind: 'init'
-      });
+      pairs.push(e('object-property', e.string(key), obj[key]));
     }
   }
   return {

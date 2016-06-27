@@ -11,12 +11,17 @@ test('basics', function(t){
   };
 
   tt(e.string('blah'), '"blah"');
+
   tt(e.object({
     one: e.number(2),
     three: e['true']()
   }), '{"one": 2,"three": true}');
-  tt(e.json([2, '3', true, false, null]), '[2, "3", true, false, null]');
+  tt(e('obj-raw',[
+    e('obj-prop', e.str('one'), e.num(2)),
+    e('obj-prop', e.id('three'), e('false'))
+  ]), '{"one": 2,three: false}');
 
+  tt(e.json([2, '3', true, false, null]), '[2, "3", true, false, null]');
   tt(e.json({
     one: [2, '3', true, false, null]
   }), '{"one": [2, "3", true, false, null]}');

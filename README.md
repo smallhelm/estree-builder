@@ -57,6 +57,8 @@ e('false')
 e('null')
 e('undefined') //aliases: 'nil'
 e('array', elements) //aliases: 'arr'
+e('object-raw', pairs) //aliases: 'obj-raw'
+e('object-property', key, value) //aliases: 'obj-prop'
 e('object', obj) //aliases: 'obj'
 ```
 
@@ -69,7 +71,7 @@ e('json', val)
 ### variables
 
 ```js
-e('var', name, val)
+e('var', id, val)
 e('identifier', name) //aliases: 'id'
 ```
 
