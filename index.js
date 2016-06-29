@@ -209,8 +209,9 @@ def('var', function(id, val){
     kind: 'var',
     declarations: [
       {
+        loc: this.loc,
         type: 'VariableDeclarator',
-        id: typeof id === 'string' ? e.id(id) : id,
+        id: typeof id === 'string' ? e.id(id, this.loc) : id,
         init: val
       }
     ]

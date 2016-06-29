@@ -163,5 +163,19 @@ test('loc', function(t){
     body: e.block([], loc)
   });
 
+  t.deepEquals(e('var', 'a', loc), {
+    loc: loc,
+    type: 'VariableDeclaration',
+    kind: 'var',
+    declarations: [
+      {
+        loc: loc,
+        type: 'VariableDeclarator',
+        id: e.id('a', loc),
+        init: undefined
+      }
+    ]
+  });
+
   t.end();
 });
