@@ -84,7 +84,7 @@ var def = function(names, builder){
       loc = args[args.length - 1];
       args = args.slice(0, -1);
     }
-    var node = builder.apply(null, args);
+    var node = builder.apply({loc: loc}, args);
     if(loc){
       node.loc = loc;
       if(loc.source && node.type === 'Literal'){
@@ -218,6 +218,16 @@ def('var', function(id, val){
 });
 
 def(['identifier', 'id'], function(name){
+  if(name.indexOf('.') >= 0){
+    var parts = name.split('.');
+    var curr = e('id', parts[0], this.loc);
+    var i = 1;
+    while(i < parts.length){
+      curr = e('.', curr, e('id', parts[i], this.loc), this.loc);
+      i++;
+    }
+    return curr;
+  }
   return {
     type: 'Identifier',
     name: name
@@ -288,26 +298,29 @@ def('throw', function(arg){
 def('try', function(body, catch_var, catch_stmt, finally_stmt){
   return {
     type: 'TryStatement',
-    block: e.block(body),
+    block: e.block(body, this.loc),
     handler: {
       type: 'CatchClause',
-      param: e.id(catch_var || 'error'),
-      body: e.block(catch_stmt)
+      param: e.id(catch_var || 'error', this.loc),
+      body: e.block(catch_stmt, this.loc)
     },
-    finalizer: e.block(finally_stmt)
+    finalizer: e.block(finally_stmt, this.loc)
   };
 });
 
 docsSection('functions');
 
 def(['function', 'fn', 'lambda'], function(args, body, id){
+  var loc = this.loc;
   return {
     type: 'FunctionExpression',
-    id: typeof id === 'string' ? e.id(id) : undefined,
+    id: typeof id === 'string' ? e.id(id, loc) : undefined,
     params: args.map(function(arg){
-      return e.id(arg);
+      return typeof arg === 'string'
+        ? e.id(arg, loc)
+        : arg;
     }),
-    body: e.block(body)
+    body: e.block(body, loc)
   };
 });
 
@@ -340,9 +353,10 @@ def('get', function(obj, prop){
 });
 
 def(['get-in', '..'], function(obj, path){
+  var loc = this.loc;
   var cur = obj;
   path.forEach(function(part){
-    cur = e.get(cur, part);
+    cur = e.get(cur, part, loc);
   });
   return cur;
 });
@@ -350,7 +364,7 @@ def(['get-in', '..'], function(obj, path){
 docsSection('language stuff');
 
 def(['arguments', 'args'], function(){
-  return e.id('arguments');
+  return e.id('arguments', this.loc);
 });
 
 def('this', function(){

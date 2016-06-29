@@ -117,6 +117,8 @@ test('basics', function(t){
   tt(e('for', e('var', 'i', e.num(0)), e('<', e.id('i'), e.num(10)), e('++', e.id('i')), e.block()), 'for (var i = 0; i < 10; i++) {}');
   tt(e('for-in', e.id('key'), e.id('obj'), e.block()), 'for (key in obj) {}');
 
+  tt(e('id', 'one.two.three'), 'one.two.three');
+
   t.end();
 });
 
@@ -135,6 +137,30 @@ test('loc', function(t){
   }).loc, {
     start: {line: 1, column: 1},
     end: {line: 3, column: 2}
+  });
+
+  var loc = {
+    start: {line: 1, column: 1},
+    end: {line: 3, column: 2}
+  };
+  t.deepEquals(
+    e.id('a.b.c', loc),
+    e('.', e('.', e.id('a', loc), e.id('b', loc), loc), e.id('c', loc), loc)
+  );
+
+  var loc2 = {
+    start: {line: 10, column: 1},
+    end: {line: 30, column: 2}
+  };
+  t.deepEquals(e.fn([e.id('a', loc2), 'b'], [], loc), {
+    loc: loc,
+    type: 'FunctionExpression',
+    id: undefined,
+    params: [
+      e.id('a', loc2),
+      e.id('b', loc)
+    ],
+    body: e.block([], loc)
   });
 
   t.end();
