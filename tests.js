@@ -117,6 +117,9 @@ test('basics', function(t){
   tt(e('for', e('var', 'i', e.num(0)), e('<', e.id('i'), e.num(10)), e('++', e.id('i')), e.block()), 'for (var i = 0; i < 10; i++) {}');
   tt(e('for-in', e.id('key'), e.id('obj'), e.block()), 'for (key in obj) {}');
 
+  tt(e('break'), 'break;');
+  tt(e('continue'), 'continue;');
+
   tt(e('id', 'one.two.three'), 'one.two.three');
 
   t.end();

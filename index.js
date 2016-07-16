@@ -282,6 +282,18 @@ def('for-in', function(left, right, body){
   };
 });
 
+def('break', function(){
+  return {
+    type: 'BreakStatement'
+  };
+});
+
+def('continue', function(){
+  return {
+    type: 'ContinueStatement'
+  };
+});
+
 def('return', function(arg){
   return {
     type: 'ReturnStatement',

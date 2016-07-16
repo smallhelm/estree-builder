@@ -83,6 +83,8 @@ e('ternary', test, consequent, alternate) //aliases: '?'
 e('while', test, body)
 e('for', init, test, update, body)
 e('for-in', left, right, body)
+e('break')
+e('continue')
 e('return', arg)
 e('throw', arg)
 e('try', body, catch_var, catch_stmt, finally_stmt)
