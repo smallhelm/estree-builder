@@ -182,3 +182,23 @@ test('loc', function(t){
 
   t.end();
 });
+
+test('Longhand or Shorthand', function(t){
+
+  t.deepEquals(e.block(e.block(e.block([e.id('a')]))), {
+    type: 'BlockStatement',
+    body: [e.id('a')]
+  });
+
+  t.deepEquals(
+    e('try', e.block([e.id('a')]), e.id('b'), e.block(['c'])),
+    e('try', [e.id('a')], 'b', ['c'])
+  );
+
+  t.deepEquals(
+    e('fn', [e.id('a')], e.block([e.id('b')])),
+    e('fn', [e.id('a')], [e.id('b')])
+  );
+
+  t.end();
+});

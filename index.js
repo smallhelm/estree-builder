@@ -309,12 +309,15 @@ def('throw', function(arg){
 });
 
 def('try', function(body, catch_var, catch_stmt, finally_stmt){
+  catch_var = catch_var || 'error';
   return {
     type: 'TryStatement',
     block: e.block(body, this.loc),
     handler: {
       type: 'CatchClause',
-      param: e.id(catch_var || 'error', this.loc),
+      param: typeof catch_var === 'string'
+        ? e.id(catch_var, this.loc)
+        : catch_var,
       body: e.block(catch_stmt, this.loc)
     },
     finalizer: e.block(finally_stmt, this.loc)
@@ -394,6 +397,13 @@ def(['statement', ';'], function(expr){
 });
 
 def('block', function(body){
+  if(body
+      && has(body, "type")
+      && has(body, "body")
+      && body.type === 'BlockStatement'){
+    //prevent nested BlockStatements
+    return body;
+  }
   return {
     type: 'BlockStatement',
     body: body
