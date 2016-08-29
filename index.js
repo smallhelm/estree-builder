@@ -87,9 +87,6 @@ var def = function(names, builder){
     var node = builder.apply({loc: loc}, args);
     if(loc){
       node.loc = loc;
-      if(loc.source && node.type === 'Literal'){
-        node.raw = loc.source;
-      }
     }
     return node;
   };

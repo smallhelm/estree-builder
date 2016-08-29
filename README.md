@@ -37,7 +37,7 @@ e('number', 1)
 All builders can take a `location` object as the last argument. (i.e. for generating source maps)
 ```js
 var loc = {
-  source: "1"
+  source: "some-file.js"
   start: { line: 1, column: 0 },
   end: { line: 1, column: 1 }
 };
