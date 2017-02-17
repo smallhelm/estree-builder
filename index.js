@@ -492,3 +492,18 @@ docsSection('unary operators');
   });
 });
 
+docsSection('generator functions');
+
+def('genfn', function(args, body, id){
+  var estree = e('function', args, body, id, this.loc);
+  estree.generator = true;
+  return estree;
+});
+
+def('yield', function(arg, delegate){
+  return {
+    type: 'YieldExpression',
+    argument: arg,
+    delegate: !!delegate
+  };
+});

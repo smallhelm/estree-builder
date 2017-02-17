@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/smallhelm/estree-builder#readme",
   "devDependencies": {
-    "astring": "^0.6.1",
-    "onchange": "^2.4.0",
+    "astring": "^0.8.0",
+    "onchange": "^3.2.1",
     "tape": "^4.5.1"
   }
 }

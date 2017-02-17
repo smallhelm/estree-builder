@@ -122,6 +122,11 @@ test('basics', function(t){
 
   tt(e('id', 'one.two.three'), 'one.two.three');
 
+  tt(e('genfn', [e.id('a'), 'b'], []), 'function* (a, b) {}');
+  tt(e('genfn', ['n'], [], 'inc'), 'function* inc(n) {}');
+  tt(e('yield', e('call', e.id('a'), [])), 'yield a()');
+  tt(e('yield', e('call', e.id('a'), []), true), 'yield* a()');
+
   t.end();
 });
 
@@ -199,6 +204,49 @@ test('Longhand or Shorthand', function(t){
     e('fn', [e.id('a')], e.block([e.id('b')])),
     e('fn', [e.id('a')], [e.id('b')])
   );
+
+  t.end();
+});
+
+test('Generator functions', function(t){
+
+  t.deepEquals(e('yield', e('call', e.id('a'), [])), {
+    type: 'YieldExpression',
+    argument: e('call', e.id('a'), []),
+    delegate: false
+  });
+  t.deepEquals(e('yield', e('call', e.id('a'), []), true), {
+    type: 'YieldExpression',
+    argument: e('call', e.id('a'), []),
+    delegate: true
+  });
+  var loc = {
+    start: {line: 1, column: 1},
+    end: {line: 3, column: 2}
+  };
+  t.deepEquals(e('yield', e('call', e.id('a'), []), loc), {
+    type: 'YieldExpression',
+    argument: e('call', e.id('a'), []),
+    delegate: false,
+    loc: loc
+  });
+  t.deepEquals(e('yield', e('call', e.id('a'), []), true, loc), {
+    type: 'YieldExpression',
+    argument: e('call', e.id('a'), []),
+    delegate: true,
+    loc: loc
+  });
+
+  t.deepEquals(e('genfn', [e.id('a'), 'b'], []), {
+    type: 'FunctionExpression',
+    id: undefined,
+    params: [
+      e.id('a'),
+      e.id('b')
+    ],
+    body: e.block([]),
+    generator: true
+  });
 
   t.end();
 });
