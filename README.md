@@ -14,7 +14,7 @@ var estree = e.number(1);
 // -> { type: 'Literal', value: 1 }
 
 //let's use astring to convert the estree into js code
-var astring = require('astring');
+var astring = require('astring').generate;
 
 astring(estree);
 // -> '1'
@@ -182,6 +182,22 @@ e('yield', arg, delegate)
 ```
 
 [//]: # (GEN-DOCS-END)
+
+## Contributing
+
+Add tests to tests.js, run them like this:
+```sh
+$ npm test
+```
+or to automatically re-run them whenever you make a change
+```sh
+$ npm start
+```
+
+Re-generate the docs (README.md between the GEN-DOCS-BEGIN|END comments)
+```sh
+$ npm run build
+```
 
 ## License
 MIT
