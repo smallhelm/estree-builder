@@ -172,5 +172,12 @@ e('++', arg)
 e('--', arg)
 ```
 
+### generator functions
+
+```js
+e('genfn', args, body, id)
+e('yield', arg, delegate)
+```
+
 ## License
 MIT

@@ -32,7 +32,7 @@ var defJSOperator = function(type, operator){
   });
 };
 
-var print_docs = false;
+var print_docs = (process && process.env && process.env.PRINT_DOCS) === "true";
 
 var docsSection = function(section_name){
   if(!print_docs) return;

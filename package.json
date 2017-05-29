@@ -7,6 +7,7 @@
     "index.js"
   ],
   "scripts": {
+    "build": "PRINT_DOCS=true node index.js",
     "start": "onchange -i *.js -- npm test -s",
     "test": "node tests.js"
   },
@@ -24,7 +25,7 @@
   },
   "homepage": "https://github.com/smallhelm/estree-builder#readme",
   "devDependencies": {
-    "astring": "^0.8.0",
+    "astring": "^1.0.2",
     "onchange": "^3.2.1",
     "tape": "^4.5.1"
   }

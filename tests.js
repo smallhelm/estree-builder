@@ -1,6 +1,6 @@
 var e = require('./');
 var test = require('tape');
-var astring = require('astring');
+var astring = require('astring').generate;
 
 test('basics', function(t){
   var tt = function(est, expected){
