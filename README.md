@@ -47,6 +47,8 @@ e('number', 1, loc)
 
 ## List of builders
 
+[//]: # (GEN-DOCS-BEGIN)
+
 ### building block values
 
 ```js
@@ -178,6 +180,8 @@ e('--', arg)
 e('genfn', args, body, id)
 e('yield', arg, delegate)
 ```
+
+[//]: # (GEN-DOCS-END)
 
 ## License
 MIT

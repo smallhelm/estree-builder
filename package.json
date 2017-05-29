@@ -7,7 +7,7 @@
     "index.js"
   ],
   "scripts": {
-    "build": "PRINT_DOCS=true node index.js",
+    "build": "node build.js",
     "start": "onchange -i *.js -- npm test -s",
     "test": "node tests.js"
   },
