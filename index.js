@@ -252,6 +252,29 @@ def(['ternary', '?'], function(test, consequent, alternate){
   };
 });
 
+def("switch", function(discriminant, cases){
+  return {
+    type: "SwitchStatement",
+    discriminant: discriminant || e.nil(),
+    cases: cases || [],
+  };
+});
+
+def("case", function(test, consequent){
+  return {
+    type: "SwitchCase",
+    test: test,
+    consequent: consequent || [],
+  };
+});
+
+def("default", function(consequent){
+  return {
+    type: "SwitchCase",
+    consequent: consequent,
+  };
+});
+
 def('while', function(test, body){
   return {
     type: 'WhileStatement',

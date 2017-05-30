@@ -127,6 +127,20 @@ test('basics', function(t){
   tt(e('yield', e('call', e.id('a'), [])), 'yield a()');
   tt(e('yield', e('call', e.id('a'), []), true), 'yield* a()');
 
+
+  tt(e("switch", e("id", "test"), [
+    e("case", e("string", "foo")),
+    e("case", e("string", "bar"), [
+      e(';', e('++', e.id('i'))),
+      e(';', e('++', e.id('j'))),
+      e("break"),
+    ]),
+    e("default", [
+      e(';', e('++', e.id('k'))),
+      e(';', e('++', e.id('l'))),
+    ]),
+  ]), 'switch (test) {case "foo":case "bar":i++;j++;break;default:k++;l++;}');
+
   t.end();
 });
 

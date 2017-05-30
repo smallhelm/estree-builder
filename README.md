@@ -82,6 +82,9 @@ e('identifier', name) //aliases: 'id'
 ```js
 e('if', test, consequent, alternate)
 e('ternary', test, consequent, alternate) //aliases: '?'
+e('switch', discriminant, cases)
+e('case', test, consequent)
+e('default', consequent)
 e('while', test, body)
 e('for', init, test, update, body)
 e('for-in', left, right, body)
