@@ -368,6 +368,19 @@ def('call', function(callee, args){
   };
 });
 
+def(['arrow'], function(args, body){
+  var loc = this.loc;
+  return {
+    type: 'ArrowFunctionExpression',
+    params: args.map(function(arg){
+      return typeof arg === 'string'
+        ? e.id(arg, loc)
+        : arg;
+    }),
+    body: e.block(body, loc)
+  };
+});
+
 docsSection('property access');
 
 def('.', function(obj, prop){

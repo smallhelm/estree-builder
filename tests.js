@@ -86,6 +86,10 @@ test('basics', function(t){
     'a > 0 ? undefined : undefined'
   );
 
+  tt(e.arrow(['a', 'b'], [
+    e('return', e('+', e.id('a'), e.id('b')))
+  ], 'add'), '(a, b) => {return a + b;}');
+
   tt(e('?', e('>', e.id('a'), e.num(0)),
         e.id('a')),
     'a > 0 ? a : undefined'
