@@ -100,6 +100,7 @@ e('try', body, catch_var, catch_stmt, finally_stmt)
 ```js
 e('function', args, body, id) //aliases: 'fn', 'lambda'
 e('call', callee, args)
+e('arrow', args, body)
 ```
 
 ### property access
