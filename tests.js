@@ -135,6 +135,11 @@ test('basics', function(t){
   tt(e('yield', e('call', e.id('a'), [])), 'yield a()');
   tt(e('yield', e('call', e.id('a'), []), true), 'yield* a()');
 
+  tt(e('class', 'A'), 'class A {}')
+  tt(e('class', 'A', 'B', [
+    e('method', 'constructor', e('fn', [], [e('string', 'c')]), 'constructor'),
+    e('method', 'm', e('fn', [], [e('string', 'n')]))
+  ]), 'class A extends B {constructor() {"c"}m() {"n"}}')
 
   tt(e("switch", e("id", "test"), [
     e("case", e("string", "foo")),

@@ -543,3 +543,26 @@ def('yield', function(arg, delegate){
     delegate: !!delegate
   };
 });
+
+def('class', function(name, superClass, methods) {
+  return {
+    type: 'ClassDeclaration',
+    id: e('id', name),
+    superClass: superClass ? e('id', superClass) : null,
+    body: {
+      type: 'ClassBody',
+      body: methods || []
+    }
+  }
+})
+
+def('method', function(key, value, kind, computed, static) {
+  return {
+    type: 'MethodDefinition',
+    key: e('id', key),
+    value,
+    kind: kind || 'method',
+    computed,
+    static
+  }
+})

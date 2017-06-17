@@ -185,6 +185,13 @@ e('genfn', args, body, id)
 e('yield', arg, delegate)
 ```
 
+### classes
+
+```js
+e('class', name, superClass, methods)
+e('method', key, value, kind, computed, static)
+```
+
 [//]: # (GEN-DOCS-END)
 
 ## Contributing
