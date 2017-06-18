@@ -504,6 +504,28 @@ docsSection('assignments');
   });
 });
 
+def('assign', function(left, right){
+  return {
+    type: 'AssignmentPattern',
+    left,
+    right
+  }
+})
+
+def('obj-pattern', function(properties){
+  return {
+    type: 'ObjectPattern',
+    properties
+  }
+})
+
+def('arr-pattern', function(elements){
+  return {
+    type: 'ArrayPattern',
+    elements
+  }
+})
+
 docsSection('unary operators');
 
 ["!", "~", "typeof", "void", "delete"].forEach(function(operator){

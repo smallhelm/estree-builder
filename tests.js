@@ -135,6 +135,11 @@ test('basics', function(t){
   tt(e('yield', e('call', e.id('a'), [])), 'yield a()');
   tt(e('yield', e('call', e.id('a'), []), true), 'yield* a()');
 
+  tt(e('assign', e('obj-pattern', [e.id('a'), e.id('b')]), e.id('right')),
+    '{a, b} = right')
+
+  tt(e('assign', e('arr-pattern', [e.id('a'), e.id('b')]), e.id('right')),
+    '[a, b] = right')
 
   tt(e("switch", e("id", "test"), [
     e("case", e("string", "foo")),

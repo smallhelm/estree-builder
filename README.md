@@ -185,6 +185,14 @@ e('genfn', args, body, id)
 e('yield', arg, delegate)
 ```
 
+### destructuring
+
+```js
+e('assign', left, right)
+e('obj-pattern', properties)
+e('arr-pattern', elements)
+```
+
 [//]: # (GEN-DOCS-END)
 
 ## Contributing
