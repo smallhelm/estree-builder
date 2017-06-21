@@ -7,6 +7,13 @@ var isObject = function(val){
   return !!val && (typeof val == 'object');
 };
 
+var strToID = function(v, loc){
+  if(typeof v === "string"){
+    return e("id", v, loc);
+  }
+  return v;
+};
+
 var mapValues = function(obj, fn){
   var n_obj = {};
   for(key in obj){
@@ -133,7 +140,7 @@ def('null', function(){
 });
 
 def(['undefined', 'nil'], function(){
-  return e.id('undefined');
+  return e("id", "undefined", this.loc);
 });
 
 def(['array', 'arr'], function(elements){
@@ -208,7 +215,7 @@ def('var', function(id, val){
       {
         loc: this.loc,
         type: 'VariableDeclarator',
-        id: typeof id === 'string' ? e.id(id, this.loc) : id,
+        id: strToID(id, this.loc),
         init: val
       }
     ]
@@ -335,9 +342,7 @@ def('try', function(body, catch_var, catch_stmt, finally_stmt){
     block: e.block(body, this.loc),
     handler: {
       type: 'CatchClause',
-      param: typeof catch_var === 'string'
-        ? e.id(catch_var, this.loc)
-        : catch_var,
+      param: strToID(catch_var, this.loc),
       body: e.block(catch_stmt, this.loc)
     },
     finalizer: e.block(finally_stmt, this.loc)
@@ -350,11 +355,9 @@ def(['function', 'fn', 'lambda'], function(args, body, id){
   var loc = this.loc;
   return {
     type: 'FunctionExpression',
-    id: typeof id === 'string' ? e.id(id, loc) : undefined,
+    id: strToID(id, loc),
     params: args.map(function(arg){
-      return typeof arg === 'string'
-        ? e.id(arg, loc)
-        : arg;
+      return strToID(arg, loc);
     }),
     body: e.block(body, loc)
   };
@@ -373,9 +376,7 @@ def(['arrow'], function(args, body){
   return {
     type: 'ArrowFunctionExpression',
     params: args.map(function(arg){
-      return typeof arg === 'string'
-        ? e.id(arg, loc)
-        : arg;
+      return strToID(arg, loc);
     }),
     body: e.block(body, loc)
   };
@@ -413,7 +414,7 @@ def(['get-in', '..'], function(obj, path){
 docsSection('language stuff');
 
 def(['arguments', 'args'], function(){
-  return e.id('arguments', this.loc);
+  return e('id', 'arguments', this.loc);
 });
 
 def('this', function(){
@@ -499,9 +500,69 @@ docsSection('assignments');
       type: 'AssignmentExpression',
       operator: op,
       left: left,
-      right: right
+      right: right,
     };
   });
+});
+
+docsSection('destructuring');
+
+def('assign', function(left, right){
+  return {
+    type: 'AssignmentPattern',
+    left: left,
+    right: right,
+  };
+});
+
+def(["assign-property", "assign-prop"], function(key, value){
+  key = strToID(key, this.loc);
+  value = strToID(value, this.loc);
+  var idName = function(id){
+      if(id && id.type === "Identifier"){
+          return id.name;
+      }
+  };
+  return {
+    type: "Property",
+    key: key,
+    value: value,
+    shorthand: idName(key) === idName(value),
+    kind: "init",
+    method: false,
+    computed: false,
+  };
+});
+
+def('obj-pattern', function(properties){
+  var loc = this.loc;
+  return {
+    type: 'ObjectPattern',
+    properties: Array.isArray(properties)
+        ? properties.map(function(p){
+            p = strToID(p, loc);
+            if(p.type === "Identifier"){
+                p = {
+                    type: "Property",
+                    key: p,
+                    value: p,
+                    kind: "init",
+                    method: false,
+                    computed: false,
+                    shorthand: true,
+                };
+            }
+            return p;
+        })
+        : properties,
+  };
+});
+
+def('arr-pattern', function(elements){
+  return {
+    type: 'ArrayPattern',
+    elements: elements,
+  };
 });
 
 docsSection('unary operators');
@@ -549,8 +610,8 @@ docsSection('classes');
 def('class', function(name, superClass, methods) {
   return {
     type: 'ClassDeclaration',
-    id: e('id', name),
-    superClass: superClass ? e('id', superClass) : null,
+    id: e('id', name, this.loc),
+    superClass: strToID(superClass, this.loc),
     body: {
       type: 'ClassBody',
       body: methods || []
@@ -561,7 +622,7 @@ def('class', function(name, superClass, methods) {
 def('method', function(key, value, kind, computed, static) {
   return {
     type: 'MethodDefinition',
-    key: e('id', key),
+    key: e('id', key, this.loc),
     value: value,
     kind: kind || 'method',
     computed: !!computed,

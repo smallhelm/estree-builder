@@ -166,6 +166,14 @@ e('^=', left, right)
 e('&=', left, right)
 ```
 
+### destructuring
+
+```js
+e('assign', left, right)
+e('obj-pattern', properties)
+e('arr-pattern', elements)
+```
+
 ### unary operators
 
 ```js
