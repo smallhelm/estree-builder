@@ -488,6 +488,32 @@ docsSection('infix operators');
   });
 });
 
+
+docsSection('unary operators');
+
+["!", "~", "typeof", "void", "delete"].forEach(function(operator){
+  def(operator, function(arg){
+    return {
+      type: "UnaryExpression",
+      prefix: true,
+      operator: operator,
+      argument: arg
+    };
+  });
+});
+
+["++", "--"].forEach(function(op){
+  def(op, function(arg){
+    return {
+      type: 'UpdateExpression',
+      operator: op,
+      argument: arg,
+      prefix: false
+    };
+  });
+});
+
+
 docsSection('assignments');
 
 [
@@ -504,6 +530,7 @@ docsSection('assignments');
     };
   });
 });
+
 
 docsSection('destructuring');
 
@@ -563,30 +590,6 @@ def('arr-pattern', function(elements){
     type: 'ArrayPattern',
     elements: elements,
   };
-});
-
-docsSection('unary operators');
-
-["!", "~", "typeof", "void", "delete"].forEach(function(operator){
-  def(operator, function(arg){
-    return {
-      type: "UnaryExpression",
-      prefix: true,
-      operator: operator,
-      argument: arg
-    };
-  });
-});
-
-["++", "--"].forEach(function(op){
-  def(op, function(arg){
-    return {
-      type: 'UpdateExpression',
-      operator: op,
-      argument: arg,
-      prefix: false
-    };
-  });
 });
 
 docsSection('generator functions');

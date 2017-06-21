@@ -149,6 +149,18 @@ e('+', a, b)
 e('-', a, b)
 ```
 
+### unary operators
+
+```js
+e('!', arg)
+e('~', arg)
+e('typeof', arg)
+e('void', arg)
+e('delete', arg)
+e('++', arg)
+e('--', arg)
+```
+
 ### assignments
 
 ```js
@@ -170,20 +182,9 @@ e('&=', left, right)
 
 ```js
 e('assign', left, right)
+e('assign-property', key, value) //aliases: 'assign-prop'
 e('obj-pattern', properties)
 e('arr-pattern', elements)
-```
-
-### unary operators
-
-```js
-e('!', arg)
-e('~', arg)
-e('typeof', arg)
-e('void', arg)
-e('delete', arg)
-e('++', arg)
-e('--', arg)
 ```
 
 ### generator functions
