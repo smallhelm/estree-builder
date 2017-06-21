@@ -499,32 +499,53 @@ docsSection('assignments');
       type: 'AssignmentExpression',
       operator: op,
       left: left,
-      right: right
+      right: right,
     };
   });
 });
 
+docsSection('destructuring');
+
 def('assign', function(left, right){
   return {
     type: 'AssignmentPattern',
-    left,
-    right
-  }
-})
+    left: left,
+    right: right,
+  };
+});
 
 def('obj-pattern', function(properties){
+  var loc = this.loc;
   return {
     type: 'ObjectPattern',
-    properties
-  }
-})
+    properties: Array.isArray(properties)
+        ? properties.map(function(p){
+            if(typeof p === "string"){
+                p = e.id(p, this.loc);
+            }
+            if(p.type === "Identifier"){
+                p = {
+                    type: "Property",
+                    key: p,
+                    value: p,
+                    kind: "init",
+                    method: false,
+                    computed: false,
+                    shorthand: true,
+                };
+            }
+            return p;
+        })
+        : properties,
+  };
+});
 
 def('arr-pattern', function(elements){
   return {
     type: 'ArrayPattern',
-    elements
-  }
-})
+    elements: elements,
+  };
+});
 
 docsSection('unary operators');
 
