@@ -7,6 +7,13 @@ var isObject = function(val){
   return !!val && (typeof val == 'object');
 };
 
+var strToID = function(v, loc){
+  if(typeof v === "string"){
+    return e("id", v, loc);
+  }
+  return v;
+};
+
 var mapValues = function(obj, fn){
   var n_obj = {};
   for(key in obj){
@@ -514,6 +521,25 @@ def('assign', function(left, right){
   };
 });
 
+def(["assign-property", "assign-prop"], function(key, value){
+  key = strToID(key, this.loc);
+  value = strToID(value, this.loc);
+  var idName = function(id){
+      if(id && id.type === "Identifier"){
+          return id.name;
+      }
+  };
+  return {
+    type: "Property",
+    key: key,
+    value: value,
+    shorthand: idName(key) === idName(value),
+    kind: "init",
+    method: false,
+    computed: false,
+  };
+});
+
 def('obj-pattern', function(properties){
   var loc = this.loc;
   return {
@@ -521,7 +547,7 @@ def('obj-pattern', function(properties){
     properties: Array.isArray(properties)
         ? properties.map(function(p){
             if(typeof p === "string"){
-                p = e.id(p, this.loc);
+                p = e.id(p, loc);
             }
             if(p.type === "Identifier"){
                 p = {

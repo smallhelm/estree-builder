@@ -141,14 +141,23 @@ test('basics', function(t){
     e('method', 'm', e('fn', [], [e('string', 'n')]))
   ]), 'class A extends B {constructor() {"c"}m() {"n"}}')
 
+
   tt(e('assign', e('obj-pattern', [e.id('a'), e.id('b')]), e.id('right')),
     '{a, b} = right');
 
   tt(e('assign', e('obj-pattern', ['a', 'b']), e.id('right')),
     '{a, b} = right');
 
+  tt(e('assign', e('obj-pattern', [
+      e('assign-prop', 'a', 'y'),
+      e('assign-prop', 'b', 'z'),
+      'c',
+  ]), e.id('right')),
+    '{a: y, b: z, c} = right');
+
   tt(e('assign', e('arr-pattern', [e.id('a'), e.id('b')]), e.id('right')),
     '[a, b] = right');
+
 
   tt(e("switch", e("id", "test"), [
     e("case", e("string", "foo")),
