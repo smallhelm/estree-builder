@@ -192,6 +192,14 @@ e('class', name, superClass, methods)
 e('method', key, value, kind, computed, static)
 ```
 
+### destructuring
+
+```js
+e('assign', left, right)
+e('obj-pattern', properties)
+e('arr-pattern', elements)
+```
+
 [//]: # (GEN-DOCS-END)
 
 ## Contributing
