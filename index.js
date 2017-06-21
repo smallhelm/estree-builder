@@ -544,6 +544,8 @@ def('yield', function(arg, delegate){
   };
 });
 
+docsSection('classes');
+
 def('class', function(name, superClass, methods) {
   return {
     type: 'ClassDeclaration',
@@ -553,16 +555,16 @@ def('class', function(name, superClass, methods) {
       type: 'ClassBody',
       body: methods || []
     }
-  }
-})
+  };
+});
 
 def('method', function(key, value, kind, computed, static) {
   return {
     type: 'MethodDefinition',
     key: e('id', key),
-    value,
+    value: value,
     kind: kind || 'method',
-    computed,
-    static
-  }
-})
+    computed: !!computed,
+    static: !!static,
+  };
+});
