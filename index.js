@@ -140,7 +140,7 @@ def('null', function(){
 });
 
 def(['undefined', 'nil'], function(){
-  return e.id('undefined');
+  return e("id", "undefined", this.loc);
 });
 
 def(['array', 'arr'], function(elements){
@@ -215,7 +215,7 @@ def('var', function(id, val){
       {
         loc: this.loc,
         type: 'VariableDeclarator',
-        id: typeof id === 'string' ? e.id(id, this.loc) : id,
+        id: strToID(id, this.loc),
         init: val
       }
     ]
@@ -342,9 +342,7 @@ def('try', function(body, catch_var, catch_stmt, finally_stmt){
     block: e.block(body, this.loc),
     handler: {
       type: 'CatchClause',
-      param: typeof catch_var === 'string'
-        ? e.id(catch_var, this.loc)
-        : catch_var,
+      param: strToID(catch_var, this.loc),
       body: e.block(catch_stmt, this.loc)
     },
     finalizer: e.block(finally_stmt, this.loc)
@@ -357,11 +355,9 @@ def(['function', 'fn', 'lambda'], function(args, body, id){
   var loc = this.loc;
   return {
     type: 'FunctionExpression',
-    id: typeof id === 'string' ? e.id(id, loc) : undefined,
+    id: strToID(id, loc),
     params: args.map(function(arg){
-      return typeof arg === 'string'
-        ? e.id(arg, loc)
-        : arg;
+      return strToID(arg, loc);
     }),
     body: e.block(body, loc)
   };
@@ -380,9 +376,7 @@ def(['arrow'], function(args, body){
   return {
     type: 'ArrowFunctionExpression',
     params: args.map(function(arg){
-      return typeof arg === 'string'
-        ? e.id(arg, loc)
-        : arg;
+      return strToID(arg, loc);
     }),
     body: e.block(body, loc)
   };
@@ -420,7 +414,7 @@ def(['get-in', '..'], function(obj, path){
 docsSection('language stuff');
 
 def(['arguments', 'args'], function(){
-  return e.id('arguments', this.loc);
+  return e('id', 'arguments', this.loc);
 });
 
 def('this', function(){
@@ -546,9 +540,7 @@ def('obj-pattern', function(properties){
     type: 'ObjectPattern',
     properties: Array.isArray(properties)
         ? properties.map(function(p){
-            if(typeof p === "string"){
-                p = e.id(p, loc);
-            }
+            p = strToID(p, loc);
             if(p.type === "Identifier"){
                 p = {
                     type: "Property",
@@ -618,8 +610,8 @@ docsSection('classes');
 def('class', function(name, superClass, methods) {
   return {
     type: 'ClassDeclaration',
-    id: e('id', name),
-    superClass: superClass ? e('id', superClass) : null,
+    id: e('id', name, this.loc),
+    superClass: strToID(superClass, this.loc),
     body: {
       type: 'ClassBody',
       body: methods || []
@@ -630,7 +622,7 @@ def('class', function(name, superClass, methods) {
 def('method', function(key, value, kind, computed, static) {
   return {
     type: 'MethodDefinition',
-    key: e('id', key),
+    key: e('id', key, this.loc),
     value: value,
     kind: kind || 'method',
     computed: !!computed,
