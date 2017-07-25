@@ -74,6 +74,14 @@ test('basics', function(t){
   tt(e('var', 'i', e.num(1.5)), 'var i = 1.5;');
   tt(e('var', e.id('blah')), 'var blah;');
 
+  tt(e('let', 'i'), 'let i;');
+  tt(e('let', 'i', e.num(1.5)), 'let i = 1.5;');
+  tt(e('let', e.id('blah')), 'let blah;');
+
+  tt(e('const', 'i'), 'const i;');
+  tt(e('const', 'i', e.num(1.5)), 'const i = 1.5;');
+  tt(e('const', e.id('blah')), 'const blah;');
+
   tt(e.fn(['a', 'b'], [
     e('return', e('+', e.id('a'), e.id('b')))
   ]), 'function (a, b) {return a + b;}');

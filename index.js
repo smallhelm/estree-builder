@@ -207,20 +207,26 @@ e.json = function(val, loc){
 
 docsSection('variables');
 
-def('var', function(id, val){
-  return {
-    type: 'VariableDeclaration',
-    kind: 'var',
-    declarations: [
-      {
-        loc: this.loc,
-        type: 'VariableDeclarator',
-        id: strToID(id, this.loc),
-        init: val
-      }
-    ]
-  };
-});
+function varDec(kind) {
+  return function(id, val) {
+    return {
+      type: 'VariableDeclaration',
+      kind: kind,
+      declarations: [
+        {
+          loc: this.loc,
+          type: 'VariableDeclarator',
+          id: strToID(id, this.loc),
+          init: val
+        }
+      ]
+    }
+  }
+};
+
+def('var', varDec('var'))
+def('let', varDec('let'))
+def('const', varDec('const'))
 
 def(['identifier', 'id'], function(name){
   if(name.indexOf('.') >= 0){

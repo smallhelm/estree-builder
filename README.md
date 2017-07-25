@@ -74,6 +74,8 @@ e('json', val)
 
 ```js
 e('var', id, val)
+e('let', id, val)
+e('const', id, val)
 e('identifier', name) //aliases: 'id'
 ```
 
