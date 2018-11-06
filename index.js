@@ -1,5 +1,5 @@
 var hasOwnProperty = Object.prototype.hasOwnProperty;
-const util = require('util');
+
 var has = function(obj, key){
   return obj != null && hasOwnProperty.call(obj, key);
 };
