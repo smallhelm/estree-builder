@@ -1,4 +1,5 @@
 var hasOwnProperty = Object.prototype.hasOwnProperty;
+
 var has = function(obj, key){
   return obj != null && hasOwnProperty.call(obj, key);
 };
@@ -190,7 +191,11 @@ e.json = function(val, loc){
   }
   if(isObject(val)){
     return e.object(mapValues(val, function(elm){
-      return e.json(elm, loc);
+      if (typeof elm === 'number' && elm < 0) {
+        return e('-', e.number(Math.abs(elm)));
+      } else {
+        return e.json(elm, loc);
+      }
     }), loc);
   }
   if(val === true || val === false){
