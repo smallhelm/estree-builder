@@ -26,6 +26,7 @@
   "homepage": "https://github.com/smallhelm/estree-builder#readme",
   "devDependencies": {
     "astring": "^1.0.3",
+    "escodegen": "~1.11.0",
     "onchange": "^3.2.1",
     "tape": "^4.7.0"
   }
