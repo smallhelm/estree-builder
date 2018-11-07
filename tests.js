@@ -1,7 +1,6 @@
 var e = require('./')
 var test = require('tape')
 var astring = require('astring').generate
-var escodegen = require('escodegen').generate
 
 test('basics', function (t) {
   var tt = function (est, expected) {
@@ -9,10 +8,6 @@ test('basics', function (t) {
       indent: '',
       lineEnd: ''
     }), expected)
-  }
-
-  var tt2 = function (ast, expected) {
-    t.equals(escodegen(ast, { format: { compact: true, quotes: 'double' } }), expected)
   }
 
   tt(e.string('blah'), '"blah"')
@@ -31,9 +26,9 @@ test('basics', function (t) {
     one: [2, '3', true, false, null]
   }), '{"one": [2, "3", true, false, null]}')
 
-  tt2(e.json({
+  tt(e.json({
     negative: -1
-  }), '{"negative":-1}')
+  }), '{"negative": -1}')
 
   tt(e['==='](e.num(1), e.num(0)), '1 === 0')
   tt(e['&&'](e.num(1), e.num(0)), '1 && 0')
