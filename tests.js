@@ -133,10 +133,10 @@ test('basics', function (t) {
 
   tt(e('..', e.id('a'), [e.num(1), e.id('b'), e.str('c')]), 'a[1][b]["c"]')
 
-  tt(e('while', e.id('a'), e(';', e('++', e.id('i')))), 'while (a) i++;');
-  tt(e('for', e('var', 'i', e.num(0)), e('<', e.id('i'), e.num(10)), e('++', e.id('i')), e.block()), 'for (var i = 0; i < 10; i++) {}');
-  tt(e('for-in', e.id('key'), e.id('obj'), e.block()), 'for (key in obj) {}');
-  tt(e('for-of', e.let(e.id('elem')), e.id('array'), e.block()), 'for (let elem of array) {}');
+  tt(e('while', e.id('a'), e(';', e('++', e.id('i')))), 'while (a) i++;')
+  tt(e('for', e('var', 'i', e.num(0)), e('<', e.id('i'), e.num(10)), e('++', e.id('i')), e.block()), 'for (var i = 0; i < 10; i++) {}')
+  tt(e('for-in', e.id('key'), e.id('obj'), e.block()), 'for (key in obj) {}')
+  tt(e('for-of', e.let(e.id('elem')), e.id('array'), e.block()), 'for (let elem of array) {}')
 
   tt(e('break'), 'break;')
   tt(e('continue'), 'continue;')

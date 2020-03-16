@@ -326,8 +326,8 @@ def('for-of', function (left, right, body) {
     left: left,
     right: right,
     body: body
-  };
-});
+  }
+})
 
 def('break', function () {
   return {
