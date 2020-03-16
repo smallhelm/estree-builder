@@ -2,29 +2,30 @@
 
 [![build status](https://secure.travis-ci.org/smallhelm/estree-builder.svg)](https://travis-ci.org/smallhelm/estree-builder)
 [![dependency status](https://david-dm.org/smallhelm/estree-builder.svg)](https://david-dm.org/smallhelm/estree-builder)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 Handy functions for building [estree](https://github.com/estree/estree/blob/master/spec.md) nodes
 
 ## Example
 
 ```js
-var e = require('estree-builder');
+var e = require('estree-builder')
 
-var estree = e.number(1);
+var estree = e.number(1)
 // -> { type: 'Literal', value: 1 }
 
 //let's use astring to convert the estree into js code
-var astring = require('astring').generate;
+var astring = require('astring').generate
 
-astring(estree);
+astring(estree)
 // -> '1'
 
 estree = e.fn(['a', 'b'], [
   e('return', e('+', e.id('a'), e.id('b')))
-], 'add');
+], 'add')
 
-astring(estree);
-// -> 'function add(a, b) {return a + b;}'
+astring(estree)
+// -> 'function add(a, b) {return a + b}'
 ```
 
 ## Usage
@@ -40,7 +41,7 @@ var loc = {
   source: "some-file.js"
   start: { line: 1, column: 0 },
   end: { line: 1, column: 1 }
-};
+}
 
 e('number', 1, loc)
 ```
@@ -95,7 +96,7 @@ e('break')
 e('continue')
 e('return', arg)
 e('throw', arg)
-e('try', body, catch_var, catch_stmt, finally_stmt)
+e('try', body, catchVar, catchStmt, finallyStmt)
 ```
 
 ### functions
@@ -201,7 +202,7 @@ e('yield', arg, delegate)
 
 ```js
 e('class', name, superClass, methods)
-e('method', key, value, kind, computed, static)
+e('method', key, value, kind, computed, isStatic)
 ```
 
 [//]: # (GEN-DOCS-END)
