@@ -320,6 +320,15 @@ def('for-in', function(left, right, body){
   };
 });
 
+def('for-of', function (left, right, body) {
+  return {
+    type: 'ForOfStatement',
+    left: left,
+    right: right,
+    body: body
+  };
+});
+
 def('break', function(){
   return {
     type: 'BreakStatement'
